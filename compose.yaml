@@ -1,0 +1,49 @@
+# ==============================================================================
+# DISCORD VC COUNTER BOT • DOCKER COMPOSE CONFIGURATION
+# Production 24/7 Deployment with Persistent Storage and Health Checks
+# ==============================================================================
+
+services:
+  vc-counter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: discord-vc-counter
+    restart: unless-stopped
+
+    # Load environment variables from .env
+    env_file:
+      - .env
+
+    # Map host port to container web dashboard port
+    ports:
+      - "${PORT:-8000}:8000"
+
+    # Persist SQLite database and configuration outside the container
+    volumes:
+      - ./data:/app/data
+
+    # Resource constraints to safeguard VPS host stability
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 512M
+        reservations:
+          cpus: "0.10"
+          memory: 128M
+
+    # Docker healthcheck
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+    # Safe log rotation to prevent disk exhaustion
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

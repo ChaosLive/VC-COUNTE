@@ -1,0 +1,37 @@
+# Git & Source Control
+.git/
+.gitignore
+
+# Environment & Sensitive Credentials (LOAD VIA ENV FILE OR SECRETS AT RUNTIME)
+.env
+.env.*
+!.env.example
+
+# Python Caches & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Large binaries & Archives
+cloudflared.exe
+*.exe
+*.zip
+*.tar.gz
+
+# Local Persistent Database (MOUNTED VIA VOLUME ./data:/app/data)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# Scratch & Temporary Logs
+scratch/
+*.log
